@@ -1,3 +1,11 @@
+#Ignore credentials, jquery, and bootstrap
+credentials.js
+jquery-1.11.3.min.js
+bootstrap.js
+bootstrap.css
+fonts/
+
+
 # Windows image file caches
 Thumbs.db
 ehthumbs.db

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Petfinder API | Page 5</title>
+
+<!-- Bootstrap -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/styles.css" rel="stylesheet">
+
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<nav class="navbar navbar-default">
+  <div class="container-fluid"> 
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#defaultNavbar1"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
+      <a class="navbar-brand" href="index.html">Home</a></div>
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="defaultNavbar1">
+      <ul class="nav navbar-nav">
+        <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Menu<span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="page01.html">1. API Keys and Making Requests</a></li>
+            <li><a href="page02.html">2. Cross-Domain Requests &amp JSONP</a></li>
+            <li><a href="page03.html">3. The pet.get Method &amp the DOM</a></li>
+            <li><a href="page04.html">4. Adding Page Content</a></li>
+            <li><a href="page05.html">5. Adding Images</a></li>
+            <li><a href="page06.html">6. Getting a Random Cat</a></li>
+            <li><a href="page07.html">7. Adding a Button and Event Listener</a></li>
+            <li><a href="page08.html">8. Conclusion</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <!-- /.navbar-collapse --> 
+  </div>
+  <!-- /.container-fluid --> 
+</nav>
+<div class="container-fluid">
+  <div class="jumbotron">
+    <h1>Adding Images</h1>
+    <p>This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
+  </div>
+</div>
+<div class="container">
+   	<div class="row">
+      <div class="col-lg-12">
+<p>Next, let's get a photo of this cat. The photos are contained in an array within the media object. Upon closer inspection, it's apparent that the array contains several versions of the same image, in different sizes. The 300 pixel-wide version of the 1st image is appropriate for this table, so we'll use the 3rd image in the array. 
+</p>
+<img src="images/photo_array.png" class="img-responsive" alt="Array of Breeds"><br/>
+<p>After creating a new image object with the photo's URL as the source, we'll set the class to <strong>image-responsive</strong>, since we're using a Bootstrap layout, and we'll use <strong>response.name.$t</strong> to use the cat's name as the alt text.</p>
+</div>
+    </div>
+  <div class="row">
+  <div class="col-lg-6"><table>
+  <tbody>
+    <tr>
+      <th scope="col"><h3>Cat of the Day</h3></th>
+      <th scope="col">&nbsp;</th>
+    </tr>
+    <tr>
+      <td colspan="2" id="image">&nbsp;</td>
+    </tr>
+    <tr>
+      <td><p>Name:</p></td>
+      <td id="name">&nbsp;</td>
+    </tr>
+    <tr>
+      <td><p>Age:</p></td>
+      <td id="age">&nbsp;</td>
+    </tr>
+    <tr>
+      <td><p>Sex:</p></td>
+      <td id="sex">&nbsp;</td>
+    </tr>
+    <tr>
+      <td><p>Breed:</p></td>
+      <td id="breed">   
+          <ul id = "breedlist"></ul>
+        </td>
+    </tr>
+    <tr>
+      <td><p>City:</p></td>
+      <td id="city">&nbsp;</td>
+    </tr>
+  </tbody>
+</table></div>
+  <div class="col-lg-6"><pre>function getKitty(data) {
+    var response = data.petfinder.pet; 
+    
+    document.getElementById('name').textContent = response.name.$t;
+    document.getElementById('age').textContent = response.age.$t;
+    document.getElementById('sex').textContent = response.sex.$t;
+    document.getElementById('city').textContent = response.contact.city.$t;
+    
+    for(var i = 0; i < response.breeds.breed.length; i++){
+        var newItem = document.createElement("li");
+        var textNode = document.createTextNode(response.breeds.breed[i].$t);
+        newItem.appendChild(textNode);
+        document.getElementById('breedlist').appendChild(newItem);
+    }
+    
+    var image = new Image();
+    image.src = response.media.photos.photo[9].$t;
+    image.setAttribute('class', 'img-responsive');
+    image.setAttribute('alt', response.name.$t);
+    
+    document.getElementById('image').appendChild(image);
+     
+}</pre></div>
+</div><br/>
+<hr>
+<div class="row">
+  <div class="col-lg-4">
+  	<a href="page04.html"><button type="button" class="btn btn-info">Prev.</button></a>
+    <a href="page06.html"><button type="button" class="btn btn-info">Next</button></a>  
+    </div>
+</div>
+<hr>
+   <div class="row">
+    <div class="text-center col-md-6 col-md-offset-3">
+      <p>Copyright &copy; Morgan Brenner &middot; 2016 </p>
+    </div>
+  </div>
+</div>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
+<script src="js/jquery-1.11.3.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed --> 
+<script src="js/bootstrap.js"></script>
+<script src="js/credentials.js"></script>
+<script src="js/p5_ex.js"></script>
+</body>
+</html>

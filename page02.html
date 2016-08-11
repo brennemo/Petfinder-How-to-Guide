@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Petfinder API | Page 2</title>
+
+<!-- Bootstrap -->
+<link href="css/bootstrap.css" rel="stylesheet">
+<link href="css/styles.css" rel="stylesheet">
+
+<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<nav class="navbar navbar-default">
+  <div class="container-fluid"> 
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#defaultNavbar1"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
+      <a class="navbar-brand" href="index.html">Home</a></div>
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="defaultNavbar1">
+      <ul class="nav navbar-nav">
+        <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Menu<span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="page01.html">1. API Keys and Making Requests</a></li>
+            <li><a href="page02.html">2. Cross-Domain Requests &amp JSONP</a></li>
+            <li><a href="page03.html">3. The pet.get Method &amp the DOM</a></li>
+            <li><a href="page04.html">4. Adding Page Content</a></li>
+            <li><a href="page05.html">5. Adding Images</a></li>
+            <li><a href="page06.html">6. Getting a Random Cat</a></li>
+            <li><a href="page07.html">7. Adding a Button and Event Listener</a></li>
+            <li><a href="page08.html">8. Conclusion</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <!-- /.navbar-collapse --> 
+  </div>
+  <!-- /.container-fluid --> 
+</nav>
+<div class="container-fluid">
+  <div class="jumbotron">
+    <h1>Cross-Domain Requests & JSONP</h1>
+    <p>Making AJAX requests across different domains</p>
+  </div>
+</div>
+<div class="container">
+   	<div class="row">
+    
+      <div class="col-lg-12">
+      <h3>XMLHttpRequest Problem</h3>
+      <p>Now that we have the URL for a JSON request, we need to deal with the issue of making AJAX requests across domains. Let's say that we simply want to log the name of this cat to the console. An XMLHttpRequest will throw an error, as demonstrated below. The Petfinder API is not allowing us to make the request from a domain other than petfinder.com. Some APIs do allow you to make standard XMLHttpRequests from a different domain, but this particular API does not.</p>
+      <p>We won't worry too much about what exactly is happening here, since it's not going to work, but if you'd like to learn more about the XMLHttpRequest, check out the chapter on HTTP in <a href="http://eloquentjavascript.net/17_http.html" target="_blank"><em>Eloquent Javascript</em></a> by Marijn Haverbeke.</p>
+<pre>var req = new XMLHttpRequest();
+    req.open('GET', "http://api.petfinder.com/pet.get?format=json&key=yourkeyhere&id=35023361", true);
+
+req.addEventListener('load', function () {
+            if (req.status >= 200 && req.status < 400) {
+                var response = JSON.parse(req.responseText); 
+                console.log(response.petfinder.pet.name.$t);
+            }
+});
+                     
+req.send(null); </pre><br/>
+<img src="images/no_access.png" class="img-responsive" alt="XMLHttpRequest Error"><br/>
+<h3>JSONP Solution</h3>
+<p>One way to get around this, which is mentioned under Request Format, Cross-Domain Support (JSONP) in the <a href="https://www.petfinder.com/developers/api-docs/" target="_blank">Documentation</a>, is to use JSONP. <a href="http://stackoverflow.com/questions/2067472/what-is-jsonp-all-about" target="_blank">This Stack Overflow question's top answers</a> explain JSONP very concisely.</p>
+<p>The function <strong>requestJSONP</strong> inserts a script, the source of which is the URL passed to it (here, assigned to the variable <strong>url</strong>), at the head of the HTML page.</p>
+<p>The <strong>getKitty</strong> function contains the desired actions to perform on the JSON response object. What we need to do to call this function is add another query to our URL, <strong>?callback</strong>. In the example below, the function is called getKitty, so we add <strong>&callback=getKitty </strong> to the URL.</p>
+<pre>function requestJSONP(url) {
+    var script = document.createElement('script');
+    script.src = url;
+    document.getElementsByTagName('head')[0].appendChild(script);
+}
+
+function getKitty(data) {
+    console.log(data.petfinder.pet.name.$t);  
+}
+ 
+var url = 'http://api.petfinder.com/pet.get?format=json&key=yourkeyhere&id=35023361&callback=getKitty';
+requestJSONP(url); </pre><br/>
+<p>This time, instead of an error message, the name of the cat is logged to the console as expected!</p>
+<img src="images/cat_name_console.png" class="img-responsive" alt="Cat Name Logged to Console"><br/>
+
+	</div>
+    </div>
+<hr>
+<div class="row">
+  <div class="col-lg-4">
+  	<a href="page01.html"><button type="button" class="btn btn-info">Prev.</button></a>
+    <a href="page03.html"><button type="button" class="btn btn-info">Next</button></a>  
+    </div>
+</div>
+<hr>
+   <div class="row">
+    <div class="text-center col-md-6 col-md-offset-3">
+      <p>Copyright &copy; Morgan Brenner &middot; 2016 </p>
+    </div>
+  </div>
+</div>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) --> 
+<script src="js/jquery-1.11.3.min.js"></script>
+
+<!-- Include all compiled plugins (below), or include individual files as needed --> 
+<script src="js/bootstrap.js"></script>
+</body>
+</html>
